@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#037cfe</color>
+    <color name="colorPrimaryDark">#141a32</color>
+    <color name="colorAccent">#12539f</color>
+
+    <color name="colorBackground" >#141a32</color>
+    <color name="colorSelectItem" >#037cfe</color>
+    <color name="colorIconSelectItem" >#0e7fe7</color>
+    <color name="colorIcon" >#526993</color>
+    <color name="colorNav" >#1e2748</color>
+    <color name="colorNavSelect" >#12539f</color>
+</resources>
