@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import com.emranul.movieinfo.fragment.FindFragment;
 import com.emranul.movieinfo.fragment.HomeFragment;
 import com.emranul.movieinfo.fragment.RankFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
                     loadFragment(new RankFragment(),"Rank");
                     return true;
                 case R.id.item_find:
+                    loadFragment(new FindFragment(),"Find");
                     return true;
             }
             return false;

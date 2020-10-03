@@ -8,6 +8,7 @@
     <color name="colorSelectItem" >#037cfe</color>
     <color name="colorIconSelectItem" >#0e7fe7</color>
     <color name="colorIcon" >#526993</color>
+    <color name="colorRating" >#A9B7D1</color>
     <color name="colorNav" >#1e2748</color>
     <color name="colorNavSelect" >#12539f</color>
 </resources>
