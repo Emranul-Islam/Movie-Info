@@ -13,17 +13,37 @@ public class Results {
     private int id;
     private String poster_path;
     private String release_date;
+    private String overview;
+    private String backdrop_path;
 
     public Results() {
     }
 
-    public Results(double vote_average, String title, String original_title, int id, String poster_path, String release_date) {
+    public Results(double vote_average, String title, String original_title, int id, String poster_path, String release_date,String overview, String backdrop_path) {
         this.vote_average = vote_average;
         this.title = title;
         this.original_title = original_title;
         this.id = id;
         this.poster_path = poster_path;
         this.release_date = release_date;
+        this.overview = overview;
+        this.backdrop_path = backdrop_path;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    public String getBackdrop_path() {
+        return POSTER_BASE_URL+backdrop_path;
+    }
+
+    public void setBackdrop_path(String backdrop_path) {
+        this.backdrop_path = backdrop_path;
     }
 
     public double getVote_average() {

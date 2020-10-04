@@ -16,7 +16,7 @@ public interface ApiServices {
     @GET("movie/popular")
     Call<CategoriesPopular> getPopular(@Query("api_key") String apiKey);
 
-    @GET("movie/upcoming")
+    @GET("movie/now_playing")
     Call<CategoriesPlaying> getPlaying(@Query("api_key") String apiKey);
 
     @GET("movie/top_rated")
