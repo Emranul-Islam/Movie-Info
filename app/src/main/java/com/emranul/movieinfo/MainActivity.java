@@ -1,14 +1,14 @@
 package com.emranul.movieinfo;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.FrameLayout;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.FrameLayout;
 
 import com.emranul.movieinfo.fragment.FindFragment;
 import com.emranul.movieinfo.fragment.HomeFragment;
@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private FrameLayout frameLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

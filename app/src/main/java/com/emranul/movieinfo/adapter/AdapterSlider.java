@@ -59,6 +59,9 @@ public class AdapterSlider extends RecyclerView.Adapter<AdapterSlider.SliderVH> 
 
     @Override
     public int getItemCount() {
+        if (slideList.size() > 6) {
+            return 6;
+        }
         return slideList.size();
     }
 

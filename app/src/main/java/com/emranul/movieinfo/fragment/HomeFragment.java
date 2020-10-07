@@ -1,6 +1,12 @@
 package com.emranul.movieinfo.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -10,18 +16,11 @@ import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.os.Handler;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.emranul.movieinfo.R;
-import com.emranul.movieinfo.adapter.AdapterSlider;
 import com.emranul.movieinfo.adapter.AdapterCategories;
 import com.emranul.movieinfo.adapter.AdapterPlaying;
 import com.emranul.movieinfo.adapter.AdapterPopular;
+import com.emranul.movieinfo.adapter.AdapterSlider;
 import com.emranul.movieinfo.api.ApiClint;
 import com.emranul.movieinfo.api.ApiServices;
 import com.emranul.movieinfo.model.CategoriesGenres;
@@ -29,6 +28,7 @@ import com.emranul.movieinfo.model.CategoriesPlaying;
 import com.emranul.movieinfo.model.CategoriesPopular;
 import com.emranul.movieinfo.model.Genres;
 import com.emranul.movieinfo.model.Results;
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +49,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private ViewPager2 viewPager2;
     private Handler sliderHandler = new Handler();
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -111,8 +112,8 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<CategoriesPopular> call, Throwable t) {
-                Toast.makeText(getContext(), "Faild.."+t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.d("TAG", "onFailure: "+t.getMessage());
+                Toast.makeText(getContext(), "Faild.." + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.d("TAG", "onFailure: " + t.getMessage());
             }
         });
 
@@ -144,14 +145,14 @@ public class HomeFragment extends Fragment {
                     playingRecycler.setAdapter(playing);
                     playing.notifyDataSetChanged();
 
-                }else {
+                } else {
                     Toast.makeText(getContext(), "Playing error", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<CategoriesPopular> call, Throwable t) {
-                Toast.makeText(getContext(),"Internet Error Playing", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Internet Error Playing", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -162,11 +163,11 @@ public class HomeFragment extends Fragment {
 
 
         List<Results> list = new ArrayList<>();
-        list.add(new Results(1, "TItle", "Original", 1, "wef", "sdf","",""));
-        list.add(new Results(1, "TItle", "Original", 1, "wef", "sdf","",""));
-        list.add(new Results(1, "TItle", "Original", 1, "wef", "sdf","",""));
-        list.add(new Results(1, "TItle", "Original", 1, "wef", "sdf","",""));
-        list.add(new Results(1, "TItle", "Original", 1, "wef", "sdf","",""));
+        list.add(new Results(1, "TItle", "Original", 1, "wef", "sdf", "", ""));
+        list.add(new Results(1, "TItle", "Original", 1, "wef", "sdf", "", ""));
+        list.add(new Results(1, "TItle", "Original", 1, "wef", "sdf", "", ""));
+        list.add(new Results(1, "TItle", "Original", 1, "wef", "sdf", "", ""));
+        list.add(new Results(1, "TItle", "Original", 1, "wef", "sdf", "", ""));
 
         //viewPager2.setAdapter(new SliderAdapter(list,viewPager2));
 
@@ -178,10 +179,13 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getContext(), "Loading playing", Toast.LENGTH_SHORT).show();
                     AdapterSlider adapterSlider = new AdapterSlider(response.body().getResults(), viewPager2);
                     viewPager2.setAdapter(adapterSlider);
+                    DotsIndicator dotsIndicator = (DotsIndicator) view.findViewById(R.id.indicator);
+                    dotsIndicator.setViewPager2(viewPager2);
+
 
                 } else {
                     Toast.makeText(getContext(), "Fiald playing", Toast.LENGTH_SHORT).show();
-                    Log.d("TAG", "onResponse: "+response.message());
+                    Log.d("TAG", "onResponse: " + response.message());
 
                 }
             }
@@ -215,17 +219,38 @@ public class HomeFragment extends Fragment {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 sliderHandler.removeCallbacks(sliderRunnable);
-                sliderHandler.postDelayed(sliderRunnable, 4000);
+                sliderHandler.postDelayed(sliderRunnable, 3000);
             }
         });
+
 
         return view;
     }
 
+    private boolean reStart = true;
+    private boolean reverse = false;
+
     private Runnable sliderRunnable = new Runnable() {
         @Override
         public void run() {
-            viewPager2.setCurrentItem(viewPager2.getCurrentItem()+1);
+            if (reStart) {
+                if (viewPager2.getCurrentItem() == 5) {
+                    reverse = true;
+                    reStart = false;
+                } else {
+                    viewPager2.setCurrentItem(viewPager2.getCurrentItem() + 1);
+                }
+            }
+
+            if (reverse) {
+                if (viewPager2.getCurrentItem() == 0) {
+                    reverse = false;
+                    reStart = true;
+                    viewPager2.setCurrentItem(viewPager2.getCurrentItem() + 1);
+                } else {
+                    viewPager2.setCurrentItem(viewPager2.getCurrentItem() - 1);
+                }
+            }
         }
     };
 
