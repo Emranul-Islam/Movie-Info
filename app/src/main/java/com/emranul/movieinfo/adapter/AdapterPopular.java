@@ -16,7 +16,7 @@ import com.emranul.movieinfo.model.Results;
 
 import java.util.List;
 
-public class AdapterPopular extends RecyclerView.Adapter<AdapterPopular.PopularVH> {
+public class AdapterPopular extends RecyclerView.Adapter<AdapterPopular.PopularViewHolder> {
 
     private List<Results> resultsList;
 
@@ -26,15 +26,15 @@ public class AdapterPopular extends RecyclerView.Adapter<AdapterPopular.PopularV
 
     @NonNull
     @Override
-    public PopularVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new PopularVH(LayoutInflater.from(parent.getContext()).inflate(R.layout.raw_popular_main,parent,false));
+    public PopularViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new PopularViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.raw_popular_main, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PopularVH holder, int position) {
+    public void onBindViewHolder(@NonNull PopularViewHolder holder, int position) {
         holder.popularTitle.setText(resultsList.get(position).getTitle());
-        holder.popularRatingText.setText(resultsList.get(position).getVote_average()+"");
-        float x = (float) (resultsList.get(position).getVote_average()/2);
+        holder.popularRatingText.setText(resultsList.get(position).getVote_average() + "");
+        float x = (float) (resultsList.get(position).getVote_average() / 2);
         holder.popularRating.setRating(x);
         Glide.with(holder.itemView.getContext())
                 .load(resultsList.get(position).getPoster_path())
@@ -48,13 +48,13 @@ public class AdapterPopular extends RecyclerView.Adapter<AdapterPopular.PopularV
         return resultsList.size();
     }
 
-    class PopularVH extends RecyclerView.ViewHolder {
+    class PopularViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView popularImage;
-        private TextView popularTitle,popularRatingText;
+        private TextView popularTitle, popularRatingText;
         private RatingBar popularRating;
 
-        public PopularVH(@NonNull View itemView) {
+        public PopularViewHolder(@NonNull View itemView) {
             super(itemView);
 
             popularImage = itemView.findViewById(R.id.raw_popular_main_image);
