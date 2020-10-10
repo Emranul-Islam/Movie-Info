@@ -45,6 +45,9 @@ public class AdapterPopular extends RecyclerView.Adapter<AdapterPopular.PopularV
 
     @Override
     public int getItemCount() {
+        if (resultsList.size() > 10) {
+            return 10;
+        }
         return resultsList.size();
     }
 

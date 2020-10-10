@@ -19,7 +19,7 @@ public class Results {
     public Results() {
     }
 
-    public Results(double vote_average, String title, String original_title, int id, String poster_path, String release_date,String overview, String backdrop_path) {
+    public Results(double vote_average, String title, String original_title, int id, String poster_path, String release_date, String overview, String backdrop_path) {
         this.vote_average = vote_average;
         this.title = title;
         this.original_title = original_title;
@@ -39,7 +39,7 @@ public class Results {
     }
 
     public String getBackdrop_path() {
-        return POSTER_BASE_URL+backdrop_path;
+        return POSTER_BASE_URL + backdrop_path;
     }
 
     public void setBackdrop_path(String backdrop_path) {
@@ -102,4 +102,6 @@ public class Results {
     public void setRelease_date(String release_date) {
         this.release_date = release_date;
     }
+
+
 }

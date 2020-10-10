@@ -1,12 +1,13 @@
 package com.emranul.movieinfo.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.emranul.movieinfo.LoadMoreActivity;
 import com.emranul.movieinfo.R;
 import com.emranul.movieinfo.model.MainModel;
 import com.emranul.movieinfo.model.Results;
@@ -73,6 +75,15 @@ public class AdapterMain extends RecyclerView.Adapter {
             case POPULAR_TYPE:
                 List<Results> popularList = list.get(position).getPopular();
                 ((PopularVH) holder).setUpPopular(popularList, list.get(position).getPopularTitle());
+                ((PopularVH) holder).button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, LoadMoreActivity.class);
+                        intent.putExtra("title", list.get(position).getPopularTitle());
+                        intent.putExtra("type", list.get(position).getListType());
+                        context.startActivity(intent);
+                    }
+                });
                 break;
             default:
                 return;
@@ -165,11 +176,13 @@ public class AdapterMain extends RecyclerView.Adapter {
     private class PopularVH extends RecyclerView.ViewHolder {
         private RecyclerView popularRecycler;
         private TextView popularTv;
+        private Button button;
 
         public PopularVH(@NonNull View itemView) {
             super(itemView);
             popularRecycler = itemView.findViewById(R.id.popular_recycler);
             popularTv = itemView.findViewById(R.id.popular_text);
+            button = itemView.findViewById(R.id.popular_btn);
         }
 
         private void setUpPopular(List<Results> popularList, String title) {
@@ -178,7 +191,6 @@ public class AdapterMain extends RecyclerView.Adapter {
             AdapterPopular adapterPopular = new AdapterPopular(popularList);
             popularRecycler.setAdapter(adapterPopular);
             adapterPopular.notifyDataSetChanged();
-            Toast.makeText(context, title, Toast.LENGTH_SHORT).show();
 
         }
     }

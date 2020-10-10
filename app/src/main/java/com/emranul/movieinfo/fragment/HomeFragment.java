@@ -21,7 +21,6 @@ import com.emranul.movieinfo.model.CategoriesPlaying;
 import com.emranul.movieinfo.model.CategoriesPopular;
 import com.emranul.movieinfo.model.Genres;
 import com.emranul.movieinfo.model.MainModel;
-import com.emranul.movieinfo.model.Results;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +32,10 @@ import retrofit2.Response;
 import static com.emranul.movieinfo.Constant.API_KEY;
 import static com.emranul.movieinfo.Constant.POPULAR_TYPE;
 import static com.emranul.movieinfo.Constant.SLIDER_TYPE;
+import static com.emranul.movieinfo.Constant.TYPE_POPULAR;
+import static com.emranul.movieinfo.Constant.TYPE_TOP_RATED;
+import static com.emranul.movieinfo.Constant.TYPE_TRENDING;
+import static com.emranul.movieinfo.Constant.TYPE_UP_COMING;
 
 public class HomeFragment extends Fragment {
 
@@ -42,6 +45,7 @@ public class HomeFragment extends Fragment {
     }
 
     private RecyclerView recyclerView, mainRecycler;
+    private final String TAG = "CALL";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,12 +71,12 @@ public class HomeFragment extends Fragment {
         mainRecycler.setAdapter(adapterMain);
 
 
-        List<Results> list = new ArrayList<>();
-        list.add(new Results(1, "TItle", "Original", 1, "wef", "sdf", "", ""));
-        list.add(new Results(1, "TItle", "Original", 1, "wef", "sdf", "", ""));
-        list.add(new Results(1, "TItle", "Original", 1, "wef", "sdf", "", ""));
-        list.add(new Results(1, "TItle", "Original", 1, "wef", "sdf", "", ""));
-        list.add(new Results(1, "TItle", "Original", 1, "wef", "sdf", "", ""));
+//        List<Results> list = new ArrayList<>(5);
+//        list.add(new Results(1, "TItle", "Original", 1, "wef", "sdf", "", ""));
+//        list.add(new Results(1, "TItle", "Original", 1, "wef", "sdf", "", ""));
+//        list.add(new Results(1, "TItle", "Original", 1, "wef", "sdf", "", ""));
+//        list.add(new Results(1, "TItle", "Original", 1, "wef", "sdf", "", ""));
+//        list.add(new Results(1, "TItle", "Original", 1, "wef", "sdf", "", ""));
 
 
         //categories api called:----------------------->
@@ -81,45 +85,74 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<CategoriesGenres> call, Response<CategoriesGenres> response) {
                 if (response.isSuccessful()) {
+                    Log.d(TAG, "onResponse: Categories: " + response.isSuccessful());
                     List<Genres> genres = response.body().getGenres();
                     genres.add(new Genres("Recommends", -1));
                     AdapterCategories adapter = new AdapterCategories(genres);
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(getContext(), "Error: " + response.errorBody(), Toast.LENGTH_SHORT).show();
-                    Log.d("TAG", "onResponse: " + response.errorBody().toString());
+
+                    Log.d(TAG, "Categories onResponse: " + response.errorBody().toString());
                 }
             }
 
             @Override
             public void onFailure(Call<CategoriesGenres> call, Throwable t) {
-                Toast.makeText(getContext(), "Internet Connection Problem", Toast.LENGTH_SHORT).show();
-                Log.d("TAG", "onFailure: " + t.getMessage());
+                Toast.makeText(getContext(), "Internet Connection Error", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "Categories onFailure: " + t.getMessage());
             }
         });
 
-        //Slider call part start now:------------------->
+        //Slider: Playing call part start now:------------------->
 
         Call<CategoriesPlaying> playingCall = apiServices.getPlaying(API_KEY);
         playingCall.enqueue(new Callback<CategoriesPlaying>() {
             @Override
             public void onResponse(Call<CategoriesPlaying> call, Response<CategoriesPlaying> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Loading playing", Toast.LENGTH_SHORT).show();
-                    mainList.add(new MainModel(response.body().getResults(), SLIDER_TYPE));
+                    Log.d(TAG, "onResponse: Playing: " + response.isSuccessful());
+                    mainList.add(0, new MainModel(response.body().getResults(), SLIDER_TYPE));
                     adapterMain.notifyDataSetChanged();
 
                 } else {
-                    Toast.makeText(getContext(), "Fiald playing", Toast.LENGTH_SHORT).show();
-                    Log.d("TAG", "onResponse: " + response.message());
+                    Log.d(TAG, "Playing onResponse: " + response.message());
+
 
                 }
             }
 
             @Override
             public void onFailure(Call<CategoriesPlaying> call, Throwable t) {
-                Toast.makeText(getContext(), "Internet Problem playing", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Internet Connection Error", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "Playing onFailure: " + t.getMessage());
+            }
+        });
+
+
+        //Trending call part start now:------------------------------>
+
+        Call<CategoriesPopular> trendingCall = apiServices.getTrending(API_KEY);
+        trendingCall.enqueue(new Callback<CategoriesPopular>() {
+            @Override
+            public void onResponse(Call<CategoriesPopular> call, Response<CategoriesPopular> response) {
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "onResponse: Trending: " + response.isSuccessful());
+                    mainList.add(new MainModel(response.body().getResults(), "Trending Movie", POPULAR_TYPE, TYPE_TRENDING));
+
+
+                    adapterMain.notifyDataSetChanged();
+
+
+                } else {
+                    Log.d(TAG, "onResponse: Trending: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CategoriesPopular> call, Throwable t) {
+                Toast.makeText(getContext(), "Internet Connection Error", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onFailure: Trending: ", t);
             }
         });
 
@@ -131,29 +164,75 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<CategoriesPopular> call, Response<CategoriesPopular> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Loading...", Toast.LENGTH_SHORT).show();
-                    mainList.add(new MainModel(response.body().getResults(), "Popular", POPULAR_TYPE));
-                    mainList.add(new MainModel(response.body().getResults(), "Top Rated", POPULAR_TYPE));
+                    Log.d(TAG, "Popular onResponse: " + response.isSuccessful());
 
+                    mainList.add(new MainModel(response.body().getResults(), "Popular Movie", POPULAR_TYPE, TYPE_POPULAR));
                     adapterMain.notifyDataSetChanged();
 
 
                 } else {
-                    Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "Popular onResponse: " + response.message());
                 }
             }
 
             @Override
             public void onFailure(Call<CategoriesPopular> call, Throwable t) {
-                Toast.makeText(getContext(), "Faild.." + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.d("TAG", "onFailure: " + t.getMessage());
+                Toast.makeText(getContext(), "Internet Connection Error", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onFailure: Popular: ", t);
             }
         });
 
 
+        //Top rated call part start now:------------------------------>
+
+        Call<CategoriesPopular> topRatedCall = apiServices.getTopRated(API_KEY);
+        topRatedCall.enqueue(new Callback<CategoriesPopular>() {
+            @Override
+            public void onResponse(Call<CategoriesPopular> call, Response<CategoriesPopular> response) {
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "Top Rated onResponse: " + response.isSuccessful());
+
+                    mainList.add(new MainModel(response.body().getResults(), "Top Rated Movie", POPULAR_TYPE, TYPE_TOP_RATED));
+                    adapterMain.notifyDataSetChanged();
 
 
+                } else {
+                    Log.d(TAG, "Top Rated onResponse: " + response.message());
+                }
+            }
 
+            @Override
+            public void onFailure(Call<CategoriesPopular> call, Throwable t) {
+                Toast.makeText(getContext(), "Internet Connection Error", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onFailure: Top Rated: ", t);
+            }
+        });
+
+
+        //Up Coming call part start now:------------------------------>
+
+        Call<CategoriesPopular> upComingCall = apiServices.getUpComing(API_KEY);
+        upComingCall.enqueue(new Callback<CategoriesPopular>() {
+            @Override
+            public void onResponse(Call<CategoriesPopular> call, Response<CategoriesPopular> response) {
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "Up Coming onResponse: " + response.isSuccessful());
+
+                    mainList.add(new MainModel(response.body().getResults(), "Up Coming Movie", POPULAR_TYPE, TYPE_UP_COMING));
+                    adapterMain.notifyDataSetChanged();
+
+
+                } else {
+                    Log.d(TAG, "Up Coming onResponse: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CategoriesPopular> call, Throwable t) {
+                Toast.makeText(getContext(), "Internet Connection Error", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onFailure: Up Coming : ", t);
+            }
+        });
 
 
         return view;

@@ -21,4 +21,12 @@ public interface ApiServices {
 
     @GET("movie/top_rated")
     Call<CategoriesPopular> getTopRated(@Query("api_key") String apiKey);
+
+    @GET("trending/movie/week")
+    Call<CategoriesPopular> getTrending(@Query("api_key") String apiKey);
+
+    @GET("movie/upcoming")
+    Call<CategoriesPopular> getUpComing(@Query("api_key") String apiKey);
+
+
 }

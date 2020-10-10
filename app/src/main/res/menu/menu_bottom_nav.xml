@@ -5,7 +5,7 @@
         android:id="@+id/item_home"
         android:title="Home"
         android:enabled="true"
-        android:icon="@drawable/ic_launcher_background"/>
+        android:icon="@drawable/ic_home" />
     <item
         android:id="@+id/item_rank"
         android:title="Rank"

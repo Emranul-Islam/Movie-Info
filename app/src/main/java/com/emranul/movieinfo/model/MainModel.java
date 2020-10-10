@@ -33,12 +33,21 @@ public class MainModel {
     //Popular recycler model:
     private List<Results> popular;
     private String popularTitle;
+    private int listType;
 
-
-    public MainModel(List<Results> popular, String popularTitle, int type) {
+    public MainModel(List<Results> popular, String popularTitle, int type, int listType) {
         this.type = type;
         this.popular = popular;
         this.popularTitle = popularTitle;
+        this.listType = listType;
+    }
+
+    public int getListType() {
+        return listType;
+    }
+
+    public void setListType(int listType) {
+        this.listType = listType;
     }
 
     public String getPopularTitle() {
@@ -56,4 +65,6 @@ public class MainModel {
     public void setPopular(List<Results> popular) {
         this.popular = popular;
     }
+
+
 }
