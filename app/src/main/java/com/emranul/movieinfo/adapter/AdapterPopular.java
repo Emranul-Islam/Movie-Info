@@ -1,5 +1,6 @@
 package com.emranul.movieinfo.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.emranul.movieinfo.DetailsActivity;
 import com.emranul.movieinfo.R;
 import com.emranul.movieinfo.model.Results;
 
@@ -40,6 +42,15 @@ public class AdapterPopular extends RecyclerView.Adapter<AdapterPopular.PopularV
                 .load(resultsList.get(position).getPoster_path())
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(holder.popularImage);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(holder.itemView.getContext(), DetailsActivity.class);
+                intent.putExtra("id", resultsList.get(position).getId());
+                holder.itemView.getContext().startActivity(intent);
+            }
+        });
 
     }
 

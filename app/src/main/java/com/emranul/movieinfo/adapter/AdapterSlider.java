@@ -1,5 +1,6 @@
 package com.emranul.movieinfo.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
+import com.emranul.movieinfo.DetailsActivity;
 import com.emranul.movieinfo.R;
 import com.emranul.movieinfo.model.Results;
 
@@ -51,6 +53,15 @@ public class AdapterSlider extends RecyclerView.Adapter<AdapterSlider.SliderVH> 
                 .placeholder(R.color.colorBackground)
                 .into(holder.cover);
 
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(holder.itemView.getContext(), DetailsActivity.class);
+                intent.putExtra("id", slideList.get(position).getId());
+                holder.itemView.getContext().startActivity(intent);
+            }
+        });
 
         if (position == slideList.size() - 2) {
             viewPager2.post(runnable);

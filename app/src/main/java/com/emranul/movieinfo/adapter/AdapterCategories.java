@@ -29,6 +29,8 @@ public class AdapterCategories extends RecyclerView.Adapter<AdapterCategories.Ca
     @Override
     public void onBindViewHolder(@NonNull CategoriesVH holder, int position) {
         holder.categoriesText.setText(categoriesList.get(position).getName());
+
+
     }
 
     @Override
