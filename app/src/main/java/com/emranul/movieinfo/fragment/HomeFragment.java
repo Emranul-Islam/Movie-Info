@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,6 +56,9 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         ApiServices apiServices = ApiClint.getRetrofit().create(ApiServices.class);
+
+        Toolbar toolbar = view.findViewById(R.id.toolbar_home);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         recyclerView = view.findViewById(R.id.rv_categories);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());

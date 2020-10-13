@@ -10,11 +10,11 @@
         android:id="@+id/item_rank"
         android:title="Rank"
         android:enabled="true"
-        android:icon="@drawable/ic_launcher_background" />
+        android:icon="@drawable/ic_rank" />
     <item
         android:id="@+id/item_find"
         android:title="Find"
         android:enabled="true"
-        android:icon="@drawable/ic_launcher_background" />
+        android:icon="@drawable/ic_search" />
 
 </menu>

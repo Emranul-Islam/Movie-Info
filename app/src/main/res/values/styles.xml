@@ -8,4 +8,8 @@
 
     </style>
 
+    <style name="Toolbar.TextSize" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">30sp</item>
+    </style>
+
 </resources>

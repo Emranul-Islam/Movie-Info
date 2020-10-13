@@ -40,5 +40,8 @@ public interface ApiServices {
     @GET("movie/{movie_id}/images")
     Call<GetImages> getImages(@Path("movie_id") int id, @Query("api_key") String apiKey);
 
+    @GET("search/movie")
+    Call<CategoriesPopular> getSearch(@Query("api_key") String apiKey, @Query("query") String query);
+
 
 }

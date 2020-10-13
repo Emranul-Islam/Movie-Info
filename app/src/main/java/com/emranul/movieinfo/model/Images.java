@@ -1,6 +1,6 @@
 package com.emranul.movieinfo.model;
 
-import static com.emranul.movieinfo.Constant.POSTER_BASE_URL;
+import static com.emranul.movieinfo.Constant.COVER_BASE_URL;
 
 public class Images {
     private int width;
@@ -24,7 +24,7 @@ public class Images {
     }
 
     public String getFile_path() {
-        return POSTER_BASE_URL + file_path;
+        return COVER_BASE_URL + file_path;
     }
 
     public void setFile_path(String file_path) {

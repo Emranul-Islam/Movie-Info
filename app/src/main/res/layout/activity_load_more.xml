@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:background="@color/colorBackground"
     tools:context=".LoadMoreActivity">
@@ -11,18 +12,19 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:background="@color/colorBackground"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$Behavior"
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/load_more_toolbar"
             android:layout_width="match_parent"
+            app:layout_scrollFlags="scroll|enterAlways"
             android:layout_height="?attr/actionBarSize"
+            app:titleTextAppearance="@style/Toolbar.TextSize"
             app:titleTextColor="@android:color/white" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="60dp"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/load_more_rv" />

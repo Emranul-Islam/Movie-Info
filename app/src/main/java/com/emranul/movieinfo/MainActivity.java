@@ -1,12 +1,12 @@
 package com.emranul.movieinfo;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -17,7 +17,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
     private FrameLayout frameLayout;
 
 
@@ -26,11 +25,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = findViewById(R.id.toolbar);
         frameLayout = findViewById(R.id.frame);
-        setSupportActionBar(toolbar);
-
-        loadFragment(new HomeFragment(),"Home");
+        loadFragment(new HomeFragment());
         BottomNavigationView nav = findViewById(R.id.bottom_nav);
         nav.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
 
@@ -43,24 +39,40 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.item_home:
 
-                    loadFragment(new HomeFragment(),"Home");
+                    loadFragment(new HomeFragment());
                     return true;
                 case R.id.item_rank:
-                    loadFragment(new RankFragment(),"Rank");
+                    loadFragment(new RankFragment());
                     return true;
                 case R.id.item_find:
-                    loadFragment(new FindFragment(),"Find");
+                    loadFragment(new FindFragment());
                     return true;
             }
             return false;
         }
     };
 
-    private void loadFragment(Fragment fragment, String title) {
+    private void loadFragment(Fragment fragment) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.frame,fragment)
+        ft.replace(R.id.frame, fragment)
                 .addToBackStack(null)
                 .commit();
-        toolbar.setTitle(title);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        MenuItem menuItem = menu.findItem(R.id.menu_search);
+        menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                loadFragment(new FindFragment());
+                return false;
+            }
+        });
+
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
 }

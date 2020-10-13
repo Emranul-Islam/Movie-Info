@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,6 +48,10 @@ public class RankFragment extends Fragment {
 
         ApiServices apiServices = ApiClint.getRetrofit().create(ApiServices.class);
 
+        Toolbar toolbar = view.findViewById(R.id.toolbar_rank);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+
         Call<CategoriesPopular> rankCall = apiServices.getTopRated(API_KEY);
         rankCall.enqueue(new Callback<CategoriesPopular>() {
             @Override
@@ -69,4 +75,5 @@ public class RankFragment extends Fragment {
 
         return view;
     }
+
 }

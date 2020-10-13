@@ -2,6 +2,7 @@ package com.emranul.movieinfo.model;
 
 import java.util.List;
 
+import static com.emranul.movieinfo.Constant.COVER_BASE_URL;
 import static com.emranul.movieinfo.Constant.POSTER_BASE_URL;
 
 public class Results {
@@ -39,7 +40,7 @@ public class Results {
     }
 
     public String getBackdrop_path() {
-        return POSTER_BASE_URL + backdrop_path;
+        return COVER_BASE_URL + backdrop_path;
     }
 
     public void setBackdrop_path(String backdrop_path) {

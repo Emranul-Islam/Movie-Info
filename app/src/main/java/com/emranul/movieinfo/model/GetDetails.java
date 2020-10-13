@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import static com.emranul.movieinfo.Constant.COVER_BASE_URL;
 import static com.emranul.movieinfo.Constant.POSTER_BASE_URL;
 
 public class GetDetails {
@@ -55,7 +56,7 @@ public class GetDetails {
     }
 
     public String getBackdropPath() {
-        return POSTER_BASE_URL + backdropPath;
+        return COVER_BASE_URL + backdropPath;
     }
 
     public void setBackdropPath(String backdropPath) {
