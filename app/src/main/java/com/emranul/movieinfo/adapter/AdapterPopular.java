@@ -1,6 +1,9 @@
 package com.emranul.movieinfo.adapter;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +23,7 @@ import java.util.List;
 
 public class AdapterPopular extends RecyclerView.Adapter<AdapterPopular.PopularViewHolder> {
 
-    private List<Results> resultsList;
+    private final List<Results> resultsList;
 
     public AdapterPopular(List<Results> resultsList) {
         this.resultsList = resultsList;
@@ -40,7 +43,6 @@ public class AdapterPopular extends RecyclerView.Adapter<AdapterPopular.PopularV
         holder.popularRating.setRating(x);
         Glide.with(holder.itemView.getContext())
                 .load(resultsList.get(position).getPoster_path())
-                .placeholder(R.drawable.ic_launcher_background)
                 .into(holder.popularImage);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -48,7 +50,13 @@ public class AdapterPopular extends RecyclerView.Adapter<AdapterPopular.PopularV
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(), DetailsActivity.class);
                 intent.putExtra("id", resultsList.get(position).getId());
-                holder.itemView.getContext().startActivity(intent);
+
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(
+                        (Activity) holder.itemView.getContext(),
+                        Pair.create(holder.popularImage, "ShareTransition")
+                );
+
+                holder.itemView.getContext().startActivity(intent, options.toBundle());
             }
         });
 
@@ -64,9 +72,10 @@ public class AdapterPopular extends RecyclerView.Adapter<AdapterPopular.PopularV
 
     class PopularViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView popularImage;
-        private TextView popularTitle, popularRatingText;
-        private RatingBar popularRating;
+        private final ImageView popularImage;
+        private final TextView popularTitle;
+        private final TextView popularRatingText;
+        private final RatingBar popularRating;
 
         public PopularViewHolder(@NonNull View itemView) {
             super(itemView);

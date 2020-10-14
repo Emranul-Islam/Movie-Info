@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="80dp"
+    android:layout_margin="5dp"
+    android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/credits_image"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:textColor="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:text="Iron Man"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp"
+        android:textAlignment="center"
+        android:id="@+id/credits_name" />
+
+    <TextView
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:text="Iron Man"
+        android:layout_marginTop="3dp"
+        android:id="@+id/credits_original_name" />
+
+
+</LinearLayout>

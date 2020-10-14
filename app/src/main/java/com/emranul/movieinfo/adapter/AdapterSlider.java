@@ -1,6 +1,9 @@
 package com.emranul.movieinfo.adapter;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +23,8 @@ import com.emranul.movieinfo.model.Results;
 import java.util.List;
 
 public class AdapterSlider extends RecyclerView.Adapter<AdapterSlider.SliderVH> {
-    private List<Results> slideList;
-    private ViewPager2 viewPager2;
+    private final List<Results> slideList;
+    private final ViewPager2 viewPager2;
 
     public AdapterSlider(List<Results> slideList, ViewPager2 viewPager2) {
         this.slideList = slideList;
@@ -59,7 +62,14 @@ public class AdapterSlider extends RecyclerView.Adapter<AdapterSlider.SliderVH> 
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(), DetailsActivity.class);
                 intent.putExtra("id", slideList.get(position).getId());
-                holder.itemView.getContext().startActivity(intent);
+
+
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(
+                        (Activity) holder.itemView.getContext(),
+                        Pair.create(holder.image, "ShareTransition")
+                );
+
+                holder.itemView.getContext().startActivity(intent, options.toBundle());
             }
         });
 
@@ -78,9 +88,12 @@ public class AdapterSlider extends RecyclerView.Adapter<AdapterSlider.SliderVH> 
 
 
     class SliderVH extends RecyclerView.ViewHolder {
-        private TextView title, vote, overview;
-        private ImageView cover, image;
-        private RatingBar ratingBar;
+        private final TextView title;
+        private final TextView vote;
+        private final TextView overview;
+        private final ImageView cover;
+        private final ImageView image;
+        private final RatingBar ratingBar;
 
         public SliderVH(@NonNull View itemView) {
             super(itemView);
@@ -93,7 +106,7 @@ public class AdapterSlider extends RecyclerView.Adapter<AdapterSlider.SliderVH> 
         }
     }
 
-    private Runnable runnable = new Runnable() {
+    private final Runnable runnable = new Runnable() {
         @Override
         public void run() {
 

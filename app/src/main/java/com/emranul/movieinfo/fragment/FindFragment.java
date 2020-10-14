@@ -45,6 +45,7 @@ public class FindFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_find, container, false);
 
@@ -54,6 +55,10 @@ public class FindFragment extends Fragment {
         errorText = view.findViewById(R.id.search_error_tv);
 
         ApiServices apiServices = ApiClint.getRetrofit().create(ApiServices.class);
+
+        searchEt.setFocusableInTouchMode(true);
+        searchEt.setFocusable(true);
+        searchEt.requestFocus();
 
 
         recyclerViewSearch.setLayoutManager(new LinearLayoutManager(getContext()));

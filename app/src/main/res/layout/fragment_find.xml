@@ -15,6 +15,8 @@
         android:background="@color/colorBackground">
 
         <LinearLayout
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+
             android:id="@+id/search_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,8 +49,9 @@
                 android:text="Search"
                 android:textColor="@android:color/white" />
         </LinearLayout>
-    </com.google.android.material.appbar.AppBarLayout>
 
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"

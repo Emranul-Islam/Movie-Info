@@ -3,4 +3,5 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="details">This is Overview of this movie you can see details anout this movie on this section</string>
+    <string name="st">ShareTransition</string>
 </resources>

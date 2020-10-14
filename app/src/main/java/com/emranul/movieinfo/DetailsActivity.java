@@ -2,9 +2,12 @@ package com.emranul.movieinfo;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,12 +15,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
+import com.emranul.movieinfo.adapter.AdapterCredits;
 import com.emranul.movieinfo.adapter.AdapterPopular;
 import com.emranul.movieinfo.adapter.AdapterViewpager2Details;
 import com.emranul.movieinfo.api.ApiClint;
 import com.emranul.movieinfo.api.ApiServices;
 import com.emranul.movieinfo.model.CategoriesPopular;
+import com.emranul.movieinfo.model.Crew;
 import com.emranul.movieinfo.model.Genres;
+import com.emranul.movieinfo.model.GetCredits;
 import com.emranul.movieinfo.model.GetDetails;
 import com.emranul.movieinfo.model.GetImages;
 import com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator;
@@ -33,9 +39,10 @@ import static com.emranul.movieinfo.Constant.API_KEY;
 public class DetailsActivity extends AppCompatActivity {
 
     private ImageView cover, image;
-    private TextView title, vote, overview, director, language, budget, revenue, release, categories;
+    private ImageButton backBtn;
+    private TextView title, vote, overview, director, language, budget, revenue, release, categories, similarTv;
     private RatingBar ratingBar;
-    private RecyclerView similarRecycler;
+    private RecyclerView similarRecycler, castRecycler;
     private ViewPager2 viewPager2SS;
     private SpringDotsIndicator indicator;
     private static final String TAG = "DetailsActivity";
@@ -61,14 +68,20 @@ public class DetailsActivity extends AppCompatActivity {
         release = findViewById(R.id.details_release);
         ratingBar = findViewById(R.id.details_rating);
         categories = findViewById(R.id.details_categories);
+        similarTv = findViewById(R.id.details_similar_tv);
         similarRecycler = findViewById(R.id.details_similar_rv);
+        castRecycler = findViewById(R.id.details_cast_rv);
         viewPager2SS = findViewById(R.id.details_viewpager_ss);
         indicator = findViewById(R.id.details_indicator);
+        backBtn = findViewById(R.id.details_back_btn);
 
         similarRecycler.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        castRecycler.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
 
+        //details api call :------------->
         Call<GetDetails> getDetailsCall = apiServices.getDetails(id, API_KEY);
 
+        //details api er sob info set kora hoiche:
         getDetailsCall.enqueue(new Callback<GetDetails>() {
             @Override
             public void onResponse(Call<GetDetails> call, Response<GetDetails> response) {
@@ -130,9 +143,14 @@ public class DetailsActivity extends AppCompatActivity {
 
                     AdapterPopular adapterSimilar = new AdapterPopular(response.body().getResults());
                     similarRecycler.setAdapter(adapterSimilar);
+                    if (response.body().getTotal_results() > 0) {
+                        similarTv.setVisibility(View.VISIBLE);
+                    }
 
                 } else {
                     Log.d(TAG, "onResponse Similar: " + response.message());
+
+
                 }
             }
 
@@ -163,6 +181,45 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
 
+
+        Call<GetCredits> getCreditsCall = apiServices.getCredits(id, API_KEY);
+        getCreditsCall.enqueue(new Callback<GetCredits>() {
+            @Override
+            public void onResponse(Call<GetCredits> call, Response<GetCredits> response) {
+                if (response.isSuccessful()) {
+                    AdapterCredits adapterCredits = new AdapterCredits(response.body().getCast());
+                    castRecycler.setAdapter(adapterCredits);
+                    adapterCredits.notifyDataSetChanged();
+                    StringBuilder stringBuilder = new StringBuilder();
+                    List<Crew> crewList = response.body().getCrew();
+                    for (int i = 0; i < crewList.size(); i++) {
+                        if (crewList.get(i).getJob().equals("Director")) {
+                            stringBuilder.append(crewList.get(i).getName());
+                            stringBuilder.append(". ");
+                        }
+                    }
+                    director.setText("Director: " + stringBuilder.toString());
+
+                } else {
+                    Toast.makeText(DetailsActivity.this, "Internet Connection Error", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onResponse: Credits: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetCredits> call, Throwable t) {
+                Log.e(TAG, "onFailure: Credits", t);
+            }
+        });
+
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                finish();
+            }
+        });
 
     }
 }

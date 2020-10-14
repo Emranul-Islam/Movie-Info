@@ -16,7 +16,7 @@ import java.util.List;
 
 public class AdapterViewpager2Details extends RecyclerView.Adapter<AdapterViewpager2Details.ViewPager2DetailsViewHolder> {
 
-    private List<Images> imagesList;
+    private final List<Images> imagesList;
 
     public AdapterViewpager2Details(List<Images> imagesList) {
         this.imagesList = imagesList;
@@ -33,6 +33,7 @@ public class AdapterViewpager2Details extends RecyclerView.Adapter<AdapterViewpa
     public void onBindViewHolder(@NonNull ViewPager2DetailsViewHolder holder, int position) {
         Glide.with(holder.itemView.getContext())
                 .load(imagesList.get(position).getFile_path())
+                .placeholder(R.color.colorNav)
                 .into(holder.imageView);
 
     }
@@ -43,7 +44,7 @@ public class AdapterViewpager2Details extends RecyclerView.Adapter<AdapterViewpa
     }
 
     class ViewPager2DetailsViewHolder extends RecyclerView.ViewHolder {
-        private ImageView imageView;
+        private final ImageView imageView;
 
         public ViewPager2DetailsViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -1,6 +1,9 @@
 package com.emranul.movieinfo.adapter;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +22,7 @@ import com.emranul.movieinfo.model.Results;
 import java.util.List;
 
 public class AdapterRank extends RecyclerView.Adapter<AdapterRank.RankViewHolder> {
-    private List<Results> rankList;
+    private final List<Results> rankList;
 
     public AdapterRank(List<Results> rankList) {
         this.rankList = rankList;
@@ -40,7 +43,6 @@ public class AdapterRank extends RecyclerView.Adapter<AdapterRank.RankViewHolder
         holder.rankRating.setRating(x);
         Glide.with(holder.itemView.getContext())
                 .load(rankList.get(position).getPoster_path())
-                .placeholder(R.drawable.ic_launcher_foreground)
                 .into(holder.rankImage);
 
 
@@ -49,7 +51,14 @@ public class AdapterRank extends RecyclerView.Adapter<AdapterRank.RankViewHolder
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(), DetailsActivity.class);
                 intent.putExtra("id", rankList.get(position).getId());
-                holder.itemView.getContext().startActivity(intent);
+
+
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(
+                        (Activity) holder.itemView.getContext(),
+                        Pair.create(holder.rankImage, "ShareTransition")
+                );
+
+                holder.itemView.getContext().startActivity(intent, options.toBundle());
             }
         });
     }
@@ -60,9 +69,11 @@ public class AdapterRank extends RecyclerView.Adapter<AdapterRank.RankViewHolder
     }
 
     class RankViewHolder extends RecyclerView.ViewHolder {
-        private ImageView rankImage;
-        private TextView rankTitle, rankVote, rankOverview;
-        private RatingBar rankRating;
+        private final ImageView rankImage;
+        private final TextView rankTitle;
+        private final TextView rankVote;
+        private final TextView rankOverview;
+        private final RatingBar rankRating;
 
         public RankViewHolder(@NonNull View itemView) {
             super(itemView);
